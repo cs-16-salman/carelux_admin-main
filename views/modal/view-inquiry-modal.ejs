@@ -1,0 +1,75 @@
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="viewInquiryModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="emailFrom"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="from">From</label>
+              <input type="text" class="form-control" id="from" disabled />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="contactNum">Contact Num</label>
+              <input type="text" class="form-control" id="contactNum" disabled />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-9">
+              <label for="subject">Subject</label>
+              <input type="text" class="form-control" id="subject" disabled />
+            </div>
+
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="message">Message</label>
+              <textarea type="text" class="form-control" id="message" rows="10" disabled></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  const viewInquiry = (e) => {
+    const id = e.currentTarget.id;
+    $('#viewInquiryModal').on('show.bs.modal', (e) => {
+      $.get(`/ajax/inquiry/${id}`, (data, status) => {
+        if (status === 'success') {
+          const {
+            inquirer_email,
+            inquirer_name,
+            inquirer_phone,
+            inquiry_subject,
+            inquiry_message,
+          } = data;
+
+          const header = `${inquirer_name} &lt;${inquirer_email}&gt;`
+          $('#emailFrom').html(header);
+          $('#from').val(inquirer_email);
+          $('#subject').val(inquiry_subject);
+          $('#contactNum').val(inquirer_phone);
+          $('#message').val(inquiry_message);
+        }
+      });
+    });
+  }
+
+
+  $('#viewInquiryModal').on('hidden.bs.modal', (e) => {
+    $('#emailFrom').html('');
+    $('#from').val('');
+    $('#subject').val('');
+    $('#contactNum').val('');
+    $('#message').val('');
+  });
+</script>

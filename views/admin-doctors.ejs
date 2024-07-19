@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Doctors</title>
+  <style>
+    .card-img-top {
+      padding: 10px 10px 0;
+    }
+
+    .ck-editor__editable_inline {
+      min-height: 100px;
+    }
+
+    .img {
+      height: 200px;
+      margin: 5px;
+      overflow: hidden;
+    }
+  </style>
+
+  <%- include('./partials/head'); %>
+</head>
+
+<body>
+  <main class="wrapper">
+    <input type="hidden" id="menu-item-selector" value="doctors" />
+    <aside>
+      <%- include('./partials/sidebar'); %>
+    </aside>
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      <%- include('./partials/nav-bar'); %>
+      <!-- End Navbar -->
+
+      <div class="content">
+        <% if (messages.success) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>
+            <%= messages.success %>
+          </strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+        <% if (messages.error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>
+            <%= messages.error %>
+          </strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div style="display: flex; justify-content: space-between">
+                <div class="card-header">
+                  <h4 class="card-title">
+                    Doctors (<%= doctors.length %>)
+                  </h4>
+                </div>
+                <div class="justify-content-end" style="align-self: flex-end; padding-right: 38px">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-modal-lg">
+                    Add Doctor
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive" style="height: 500px; overflow: auto">
+                  <table class="table table-hover">
+                    <thead class="text-primary">
+                      <th>Doctor Name</th>
+                      <th>Specialization</th>
+                      <th>Contact Number</th>
+                      <th style="width: 500px;">Details</th>
+                      <th>City</th>
+                      <th>State</th>
+                      <th>Image</th>
+                      <th>Action</th>
+                    </thead>
+                    <tbody>
+                      <% if(typeof doctors == 'object' && doctors.length == 0){ %>
+                      <tr>
+                        <td colspan="100%" style="padding-left: 45%;">No data found</td>
+                      </tr>
+                      <% } %>
+
+                      <% for(let doc of doctors) { %>
+                      <tr>
+                        <td>
+                          <%= doc.doc_name %>
+                        </td>
+                        <td>
+                          <%= doc.specialization %>
+                        </td>
+                        <td>
+                          <%= doc.contact_num %>
+                        </td>
+                        <td>
+                          <%- doc.details %>
+                        </td>
+                        <td>
+                          <%= doc.city %>
+                        </td>
+                        <td>
+                          <%= doc.state %>
+                        </td>
+                        <td>
+                          <a href="#" data-src="<%= doc.avatar %>" data-toggle="modal" data-target=".imgModal">View Image</a>
+                        </td>
+                        <td>
+                          <button class="btn btn-danger btn-neutral" data-toggle="tooltip" data-placement="top" title="Delete" style="padding: 5px" onclick="delDoc('<%= doc.id %>')">
+                            <i class="fa fa-trash" style="font-size: 20px"></i>
+                          </button>
+                          <span data-toggle="modal" data-target="#editDocModal" data-id="<%= doc.id %>">
+                            <button class="btn btn-warning btn-neutral" data-toggle="tooltip" data-placement="top" title="Edit" style="padding: 5px">
+                              <i class="fa fa-pencil-square" style="font-size: 20px"></i>
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Doctor Modal -->
+  <%- include('./modal/add-doctor-modal'); %>
+
+  <%- include('./modal/view-image-modal'); %>
+
+  <%- include('./modal/edit-doctor-modal'); %>
+
+  <form action="delete_doctor" method="POST" id="delDocForm">
+    <input type="hidden" name="doc_id" id="doc_id" />
+  </form>
+
+  <%- include('./partials/footer'); %>
+</body>
+
+</html>
+<script>
+  const delDoc = (docId) => {
+    const res = confirm("Are you sure?");
+    if (!res) {
+      return;
+    }
+
+    $("#doc_id").val(docId);
+    $("#delDocForm").submit();
+  };
+</script>

@@ -1,0 +1,18 @@
+<!--   Core JS Files   -->
+<script src="../js/core/popper.min.js"></script>
+<script src="../js/core/bootstrap.min.js"></script>
+<script src="../js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script src="../js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+
+<script src="../js/validator/chngPwd_form_validator.js"></script>
+
+<script>
+  $(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  $(document).ready(() => {
+    const menuId = $("#menu-item-selector").val();
+    $(`#${menuId}`).addClass("active");
+  });
+</script>

@@ -1,0 +1,166 @@
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="editDocModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Doctor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <form action="/cockpit/update_doctor" enctype="multipart/form-data" method="POST" id="updateDoc_form">
+            <input type="hidden" name="doc_id" id="updateDoc_id" value="">
+            <div class="form-row">
+              <div class="col-md-9">
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="updateDocName">Doctor Name</label>
+                    <input type="text" class="form-control" id="updateDocName" name="updateDocName" />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="updateSpecialization">Specialization</label>
+                    <input type="text" class="form-control" id="updateSpecialization" name="updateSpecialization" />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="updateContactNum">Contact No.</label>
+                    <input type="number" class="form-control" id="updateContactNum" name="updateContactNum" />
+                  </div>
+                </div>
+                <div>
+                  <div class="form-group">
+                    <label for="updateDocDetails">Details</label>
+                    <textarea class="form-control" id="updateDocDetails_editor" name="updateDocDetails"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <img src="/images/placeholder.png" data-src="/images/placeholder.png" alt="Doc Image" id="docImg" class="img img-thumbnail rounded" style="height: 200px;">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="updateDocCity">City</label>
+                <input type="text" class="form-control" name="updateDocCity" id="updateDocCity" />
+              </div>
+              <div class="form-group col-md-3">
+                <label for="updateDocState">State</label>
+                <select class="form-control" id="updateDocState" name="updateDocState">
+                  <option value selected>Select State</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Andaman and Nicobar Islands">
+                    Andaman and Nicobar Islands
+                  </option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Dadar and Nagar Haveli">
+                    Dadar and Nagar Haveli
+                  </option>
+                  <option value="Daman and Diu">Daman and Diu</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Puducherry">Puducherry</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="West Bengal">West Bengal</option>
+                </select>
+              </div>
+              <div class="form-group col-md-4" style="margin-top: 33px;">
+                <input type="file" id="updateDocAvatar" name="updateDocAvatar" class="custom-file-input" />
+                <label for="updateDocAvatar" class="custom-file-label">Doctor Avatar</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  ClassicEditor
+    .create(document.querySelector('#updateDocDetails_editor'), {
+      autosave: {
+        save(editor) {
+          $('#updateDocDetails_editor').val(editor.getData());
+        }
+      }
+    }).then(editor => {
+      window.updateDocEditor = editor;
+    }).catch(error => console.error(error));
+
+  $('#editDocModal').on('show.bs.modal', function(e) {
+    const id = $(e.relatedTarget).attr("data-id")
+    $.get(`/ajax/doctor/${id}`, (data, status) => {
+      if (status === 'success') {
+        const {
+          id,
+          doc_name,
+          specialization,
+          contact_num,
+          details,
+          avatar,
+          city,
+          state
+        } = data;
+        $('#updateDoc_id').val(id);
+        $('#updateDocName').val(doc_name);
+        $('#updateSpecialization').val(specialization);
+        $('#updateContactNum').val(contact_num);
+        updateDocEditor.setData(details);
+
+        $('#updateDocCity').val(city);
+        $('#updateDocState').val(state);
+        $('#docImg').attr('src', avatar);
+      }
+    });
+  });
+
+  $('#editDocModal').on('hidden.bs.modal', function(e) {
+    $('#updateDoc_id').val('');
+    $('#updateDocName').val('');
+    $('#updateSpecialization').val('');
+    $('#updateContactNum').val('');
+    updateDocEditor.setData('');
+
+    $('#updateDocCity').val('');
+    $('#updateDocState').val('');
+    $('#docImg').attr('src', $('#docImg').attr('data-src'));
+  });
+
+  $("#updateDocAvatar").change((e) => {
+    const [file] = e.target.files;
+    if (file && (file.type === 'image/png' ||
+        file.type === "image/jpeg" ||
+        file.type === "image/jpg")) {
+      $('#docImg').attr('src', URL.createObjectURL(file));
+    }
+  });
+</script>

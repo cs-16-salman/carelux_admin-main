@@ -1,0 +1,18 @@
+<div class="modal fade imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="viewImgModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="height: 0;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding: 6px 15px;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <img id="viewImageContainer" style="margin: 5px;">
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#viewImgModal').on('show.bs.modal', (e) => {
+    $("#viewImageContainer").attr('src', $(e.relatedTarget).attr('data-src'));
+  });
+</script>

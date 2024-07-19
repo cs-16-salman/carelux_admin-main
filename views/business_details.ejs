@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Business Details</title>
+  <style>
+    .ck-editor__editable_inline {
+      min-height: 200px;
+    }
+  </style>
+  <%- include('./partials/head'); %>
+</head>
+
+<body>
+  <main class="wrapper">
+    <input type="hidden" id="menu-item-selector" value="businessInfo" />
+    <aside>
+      <%- include('./partials/sidebar'); %>
+    </aside>
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      <%- include('./partials/nav-bar'); %>
+      <!-- End Navbar -->
+
+      <div class="content">
+        <% if (messages.success) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>
+            <%= messages.success %>
+          </strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+        <% if (messages.error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>
+            <%= messages.error %>
+          </strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+        <div class="card text-center">
+          <div class="card-header">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#about">About</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#vision">Vison</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mission">Mission</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#address">Office Address</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#email">Office Email</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mobile">Office Mobile</a></li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <!-- About Tab Container Start -->
+            <div class="tab-pane fade-in active" id="about">
+              <h3>About Us Section</h3>
+              <form action="/cockpit/update_business_detail" method="POST">
+                <div class="form-group" style="margin: 0 30%;">
+                  <textarea class="form-control" id="about_editor" name="about"><%- businessDetails.about %></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+            </div>
+            <!-- About Tab Container End -->
+
+            <!-- Vision Tab Container Start -->
+            <div class="tab-pane fade" id="vision">
+              <h3>Our Vision Section</h3>
+              <form action="/cockpit/update_business_detail" method="POST">
+                <div class="form-group" style="margin: 0 30%;">
+                  <textarea class="form-control" id="vision_editor" name="vision"><%- businessDetails.vision %></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+            </div>
+            <!-- Vision Tab Container End -->
+
+            <!-- Mission Tab Container Start -->
+            <div class="tab-pane fade" id="mission">
+              <h3>Our Mission Section</h3>
+              <form action="/cockpit/update_business_detail" method="POST">
+                <div class="form-group" style="margin: 0 30%;">
+                  <textarea class="form-control" id="mission_editor" name="mission"><%- businessDetails.mission %></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+            </div>
+            <!-- Mission Tab Container End -->
+
+            <!-- Address Tab Container Start -->
+            <div class="tab-pane fade" id="address">
+              <h3>Office Address</h3>
+              <form action="/cockpit/update_business_detail" method="POST">
+                <div class="form-group" style="margin: 0 30%;">
+                  <input type="text" class="form-control" name="address" placeholder="Office Address" value="<%= businessDetails.address %>" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+            </div>
+            <!-- Address Tab Container End -->
+
+            <!-- Email Tab Container Start -->
+            <div class="tab-pane fade" id="email">
+              <h3>Office Email</h3>
+              <form action="/cockpit/update_business_detail" method="POST">
+                <div class="form-group" style="margin: 0 30%;">
+                  <input type="email" class="form-control" name="email" placeholder="Email" value="<%= businessDetails.email %>" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+            </div>
+            <!-- Email Tab Container End -->
+
+            <!-- Mobile Tab Container Start -->
+            <div class="tab-pane fade" id="mobile">
+              <h3>Office Mobile</h3>
+              <form action="/cockpit/update_business_detail" method="POST">
+                <div class="form-group" style="margin: 0 30%;">
+                  <input type="text" class="form-control" name="mobile" placeholder="Mobile Number" value="<%= businessDetails.mobile %>" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+            </div>
+            <!-- Mobile Tab Container End -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <%- include('./partials/footer'); %>
+
+  <script>
+    $(document).ready(() => {
+      const about = ClassicEditor
+        .create(document.querySelector('#about_editor'), {
+          autosave: {
+            save(editor) {
+              $('#about_editor').val(editor.getData());
+            }
+          }
+        }).catch(
+          (error) => {
+            console.error(error);
+          }
+        );
+
+      const vision = ClassicEditor
+        .create(document.querySelector('#vision_editor'), {
+          autosave: {
+            save(editor) {
+              $('#vision_editor').val(editor.getData());
+            }
+          }
+        }).catch(
+          (error) => {
+            console.error(error);
+          }
+        );
+
+      const mission = ClassicEditor
+        .create(document.querySelector('#mission_editor'), {
+          autosave: {
+            save(editor) {
+              $('#mission_editor').val(editor.getData());
+            }
+          }
+        }).catch(
+          (error) => {
+            console.error(error);
+          }
+        );
+    });
+  </script>
+</body>
+
+</html>

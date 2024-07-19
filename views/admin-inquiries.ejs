@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Inquiries</title>
+  <style>
+    .card-img-top {
+      padding: 10px 10px 0;
+    }
+
+    tr {
+      cursor: pointer;
+    }
+
+    .form-control[disabled] {
+      background-color: transparent !important;
+    }
+  </style>
+  <%- include('./partials/head'); %>
+</head>
+
+<body>
+  <main class="wrapper">
+    <input type="hidden" id="menu-item-selector" value="inquiries" />
+    <aside>
+      <%- include('./partials/sidebar'); %>
+    </aside>
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      <%- include('./partials/nav-bar'); %>
+      <!-- End Navbar -->
+
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div style="display: flex; justify-content: space-between">
+                <div class="card-header">
+                  <h4 class="card-title">
+                    Inquiries (<%= inquiries.length %>)
+                  </h4>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive" style="height: 500px; overflow: auto">
+                  <table class="table table-hover">
+                    <thead class="text-primary">
+                      <th>Inquirer Name</th>
+                      <th>Inquirer Email</th>
+                      <th>Inquirer Phone</th>
+                      <th>Inquirer Subject</th>
+                      <th>Inquirer Message</th>
+                      <th>Received On</th>
+                    </thead>
+                    <tbody>
+                      <% if(typeof inquiries == 'object' && inquiries.length == 0){ %>
+                      <tr>
+                        <td colspan="100%" style="padding-left: 45%;">No data found</td>
+                      </tr>
+                      <% } %>
+
+                      <% for(let inquiry of inquiries) { %>
+                      <tr id="<%= inquiry.id %>" data-toggle="modal" data-target="#viewInquiryModal">
+                        <td>
+                          <%= inquiry.inquirer_name %>
+                        </td>
+                        <td>
+                          <%= inquiry.inquirer_email %>
+                        </td>
+                        <td>
+                          <%= inquiry.inquirer_phone %>
+                        </td>
+                        <td>
+                          <%= inquiry.inquiry_subject %>
+                        </td>
+                        <td>
+                          <%= inquiry.inquiry_message %>
+                        </td>
+                        <td>
+                          <%= inquiry.created_at.toLocaleString() %>
+                        </td>
+                      </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <%- include('./modal/view-inquiry-modal'); %>
+
+  <%- include('./partials/footer'); %>
+
+  <script>
+    $("tr").click((e) => {
+      viewInquiry(e);
+    });
+  </script>
+</body>
+
+</html>
